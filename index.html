@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>shopping cart</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <style>
+  .item{
+  border: 1px solid gray;
+  width: 200px;
+  padding: 7px;
+  margin: 5px;
+  height: auto;
+  float: left;
+  }
+  .content{
+    margin:0 auto;
+    width:98%;
+  }
+  #output{
+    clear: both;
+    padding: 10px;
+    margin:50px auto;
+    width: 80%;
+    border: 1px solid black;
+  }
+  </style>
+</head>
+<body>
+  <div class="content">
+  <div class="item"><center><h3>iphone</h3></center>
+    <img src="http://via.placeholder.com/350x150" alt="" class="img-fluid"><div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt perferendis repellendus quidem nemo, nesciunt aspernatur reprehenderit quas.<a href="#" class="productItem" data-name="iphone" data-size="32GB" data-price="5000" data-id="01">click here</a></div>
+  </div>
+  <div class="item"><center><h3>iphone</h3></center>
+    <img src="http://via.placeholder.com/350x150" alt="" class="img-fluid"><div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt perferendis repellendus quidem nemo, nesciunt aspernatur reprehenderit quas.<a href="#" class="productItem" data-name="iphone" data-size="16GB" data-price="5000" data-id="02">click here</a></div>
+  </div>
+  <div class="item"><center><h3>iphone</h3></center>
+    <img src="http://via.placeholder.com/350x150" alt="" class="img-fluid"><div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt perferendis repellendus quidem nemo, nesciunt aspernatur reprehenderit quas.<a href="#" class="productItem" data-name="earphones" data-size="none" data-price="500" data-id="03">click here</a></div>
+  </div>
+  <div class="item"><center><h3>iphone</h3></center>
+    <img src="http://via.placeholder.com/350x150" alt="" class="img-fluid"><div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt perferendis repellendus quidem nemo, nesciunt aspernatur reprehenderit quas.<a href="#" class="productItem" data-name="headset" data-price="100" data-id="04">click here</a></div>
+  </div>
+  <div class="item"><center><h3>iphone</h3></center>
+    <img src="http://via.placeholder.com/350x150" alt="" class="img-fluid"><div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt perferendis repellendus quidem nemo, nesciunt aspernatur reprehenderit quas.<a href="#" class="productItem" data-name="blackberry" data-price="2000" data-id="05">click here</a></div>
+  </div>
+  <div class="item"><center><h3>iphone</h3></center>
+    <img src="http://via.placeholder.com/350x150" alt="" class="img-fluid"><div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt perferendis repellendus quidem nemo, nesciunt aspernatur reprehenderit quas.<a href="#" class="productItem" data-name="glasses" data-price="1000" data-id="06">click here</a></div>
+  </div>
+  </div>
+  <div id="output">
+
+  </div>
+  <!--  bootstrap javascript and jquery cdn         ---------------->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script>
+var items=[];
+  $(document).ready(function(){
+      outputCart();
+    $(".productItem").click(function(e){
+      e.preventDefault();
+      var item=$(this.dataset)[0];
+      item.quantity=1;
+      var itempresent=false;
+      $.each(items,function(index,value){
+        if(value.id == item.id){
+        value.quantity=parseInt(value.quantity)  + parseInt(item.quantity);
+          itempresent=true;
+        }
+      });
+      if(!itempresent){
+      items.push(item);
+    }
+    sessionStorage['sc']=JSON.stringify(items);
+    outputCart();
+    });
+  function outputCart(){
+    if(sessionStorage['sc'] != null){
+      items=JSON.parse(sessionStorage['sc'].toString());
+      console.log(items);
+    }
+    var html='';
+    var total=0;
+    $.each(items,function(index,value){
+      let subtotal=value.quantity*value.price;
+      total = subtotal+total;
+      console.log(total);
+      html =html + '<div>Item : '+value.name + '  Quantitiy : ' + value.quantity+ '   Price : ' + formatCurrency(subtotal) +'<br>';
+    });
+     html =html + 'Total' +formatCurrency(total);
+    $('#output').html(html);
+  }
+  });
+function formatCurrency(value){
+  return '$' +(value).toFixed(2);
+}
+</script>
+</body>
+</html>
